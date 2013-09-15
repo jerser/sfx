@@ -1,5 +1,8 @@
 require 'bundler/setup'
 Bundler.require(:default)
+
+DB = Sequel.postgres('sfx')
+
 Dir.glob(File.join(__dir__, 'lib', '*.rb')) { |f| require_relative f }
 
 module Sfx
@@ -13,6 +16,12 @@ module Sfx
     )
 
     get '/'  do
+      render :application
+    end
+
+    post '/' do
+      Subscription.subscribe(request[:student], request[:tuesday])
+      Subscription.subscribe(request[:student], request[:thursday])
       render :application
     end
   end

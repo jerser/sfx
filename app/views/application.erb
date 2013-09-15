@@ -8,6 +8,7 @@
     <title>De Frères: Activiteitenkiezer</title>
 
     <link href="//netdna.bootstrapcdn.com/bootswatch/3.0.0/amelia/bootstrap.min.css" rel="stylesheet">
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/3.4.1/select2.min.css" rel="stylesheet">
     <link href="custom.css" rel="stylesheet">
     <!--[if lt IE 9]>
       <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.6.2/html5shiv.js"></script>
@@ -18,51 +19,43 @@
     <div class="container">
       <h1 class="center">Activiteitenkiezer</h1>
 
-      <form class="form-horizontal">
+      <form class="form-horizontal" method="post">
         <div class="well center col-lg-6">
           <fieldset>
-            <legend>Persoonlijke gegevens</legend>
+            <legend>Kies je activiteit</legend>
             <div class="form-group">
-              <label for="first_name" class="col-lg-2 control-label">Voornaam</label>
+              <label for="first_name" class="col-lg-2 control-label">Leerling</label>
               <div class="col-lg-10">
-                <input type="text" class="form-control" name="first_name" id="first_name">
+                <select style="width: 100%;" id="student" name="student">
+                  <option></option>
+                  <% Student.all.each do |s| %>
+                  <option value="<%= s.id %>"><%= "#{s.first_name} #{s.last_name}" %></option>
+                  <% end %>
+                </select>
               </div>
             </div>
             <div class="form-group">
-              <label for="last_name" class="col-lg-2 control-label">Familienaam</label>
+              <label for="last_name" class="col-lg-2 control-label">Dinsdag</label>
               <div class="col-lg-10">
-                <input type="text" class="form-control" name="last_name" id="last_name">
+                <select style="width: 100%;" id="tuesday" name="tuesday">
+                  <option></option>
+                  <% Activity.where(day: "tuesday").all.each do |a| %>
+                  <option value="<%= a.id %>"><%= a.name %></option>
+                  <% end %>
+                </select>
               </div>
             </div>
             <div class="form-group">
-              <label for="class" class="col-lg-2 control-label">Klas</label>
+              <label for="class" class="col-lg-2 control-label">Donderdag</label>
               <div class="col-lg-10">
-                <input type="text" class="form-control" name="class" id="class">
+                <select style="width: 100%;" id="thursday" name="thursday">
+                  <option></option>
+                  <% Activity.where(day: "thursday").all.each do |a| %>
+                  <option value="<%= a.id %>"><%= a.name %></option>
+                  <% end %>
+                </select>
               </div>
             </div>
-            <div class="form-group">
-              <label for="classno" class="col-lg-2 control-label">Klasnummer</label>
-              <div class="col-lg-10">
-                <input type="text" class="form-control" name="classno" id="classno">
-              </div>
-            </div>
-          </fieldset>
-        </div>
-
-        <div class="well center col-lg-6">
-          <fieldset>
-            <legend>Dinsdag</legend>
-            <select class="form-control">
-              <option>Maak je keuze</option>
-            </select>
-          </fieldset>
-        </div>
-        <div class="well center col-lg-6">
-          <fieldset>
-            <legend>Donderdag</legend>
-            <select class="form-control">
-              <option>Maak je keuze</option>
-            </select>
           </fieldset>
         </div>
         <div class="col-lg-6 center inner-center">
@@ -72,5 +65,47 @@
     </div>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/3.4.1/select2.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.11.1/jquery.validate.min.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function() {
+        $("#student").select2({
+          placeholder: "Selecteer je naam",
+          formatNoMatches: function(term) {
+            return "Geen naam gevonden";
+          }
+        });
+        $("#thursday").select2({
+          placeholder: "Kies een activiteit",
+          formatNoMatches: function(term) {
+            return "Geen activiteit gevonden";
+          }
+        });
+        $("#tuesday").select2({
+          placeholder: "Kies een activiteit",
+          formatNoMatches: function(term) {
+            return "Geen activiteit gevonden";
+          }
+        });
+        $("form").validate({
+          rules: {
+            student: {
+              required: true
+            },
+            tuesday: {
+              required: true
+            },
+            thursday: {
+              required: true
+            }
+          },
+          messages: {
+            student:  "Gelieve een naam op te geven",
+            tuesday:  "Gelieve een activiteit te selecteren",
+            thursday: "Gelieve een activiteit te selecteren"
+          }
+        });
+      });
+    </script>
   </body>
 </html>
