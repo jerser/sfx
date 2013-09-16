@@ -1,5 +1,6 @@
 require 'bundler/setup'
 Bundler.require(:default)
+require 'csv'
 
 DB = Sequel.postgres('sfx')
 
