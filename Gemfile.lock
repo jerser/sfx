@@ -1,6 +1,8 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    daemons (1.1.9)
+    eventmachine (1.0.3)
     pg (0.16.0)
     rack (1.5.2)
     rack-accept (0.4.5)
@@ -10,6 +12,10 @@ GEM
       rack-accept (~> 0.4)
       tilt (~> 1.4)
     sequel (4.2.0)
+    thin (1.5.1)
+      daemons (>= 1.0.9)
+      eventmachine (>= 0.12.6)
+      rack (>= 1.0.0)
     tilt (1.4.1)
 
 PLATFORMS
@@ -19,3 +25,4 @@ DEPENDENCIES
   pg
   scorched (>= 0.17)
   sequel
+  thin

@@ -16,13 +16,19 @@ module Sfx
     )
 
     get '/'  do
-      render :application
+      render :application, locals: {success: nil, warning: nil}
     end
 
     post '/' do
-      Subscription.subscribe(request[:student], request[:tuesday])
-      Subscription.subscribe(request[:student], request[:thursday])
-      render :application
+      if Subscription.subscribe(request[:student],
+                             [request[:tuesday], request[:thursday]])
+        success = "Je werd succesvol ingeschreven."
+        warning = nil
+      else
+        success = nil
+        warning = "Een gekozen activiteit is reeds volzet. Maak andere keuzes."
+      end
+      render :application, locals: {success: success, warning: warning}
     end
   end
 end
